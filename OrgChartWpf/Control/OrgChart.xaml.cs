@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,11 +10,37 @@ namespace OrgChartWpf.Control
     {
         #region Variable
 
+        private const string PART_SCROLLVIEWER = "PART_Scrollviewer";
         private const string PART_BORDER = "PART_Border";
+
+        private ScrollViewer _scrollViewer;
 
         #endregion
 
         #region Dependency Property
+
+        #region Background
+
+        public static readonly new DependencyProperty BackgroundProperty =
+            DependencyProperty.Register("Background",
+                typeof(Brush),
+                typeof(OrgChart),
+                new PropertyMetadata(Brushes.White, ChangedBackgroundProperty));
+
+        private static void ChangedBackgroundProperty(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var orgChart = obj as OrgChart;
+
+            orgChart.InvalidateVisual();
+        }
+
+        public new Brush Background
+        {
+            get { return (Brush)GetValue(BackgroundProperty); }
+            set { SetValue(BackgroundProperty, value); }
+        }
+
+        #endregion        
 
         #region LineBrush
 
@@ -21,7 +48,7 @@ namespace OrgChartWpf.Control
             DependencyProperty.Register("LineBrush",
                 typeof(Brush),
                 typeof(OrgChart),
-                new PropertyMetadata(Brushes.Black, ChangedLineBrushProperty));
+                new PropertyMetadata(Brushes.Gray, ChangedLineBrushProperty));
 
         private static void ChangedLineBrushProperty(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
@@ -149,33 +176,50 @@ namespace OrgChartWpf.Control
 
             _pen = new Pen(LineBrush, LineThickness);
 
-            Background = Brushes.Transparent;
-            ClipToBounds = true;
             BorderThickness = new Thickness(0);
+            base.Background = Brushes.Transparent;
+            ClipToBounds = true;
 
-            Loaded += (sender, args) =>
-            {
-                AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler((s, e) => { InvalidateVisual(); }));
-                AddHandler(TreeViewItem.ExpandedEvent, new RoutedEventHandler((s, e) => { InvalidateVisual(); }));
-                AddHandler(TreeViewItem.CollapsedEvent, new RoutedEventHandler((s, e) => { InvalidateVisual(); }));
-            };
+            AddHandler(TreeViewItem.ExpandedEvent, new RoutedEventHandler((s, e) => InvalidateVisualFromItem(e.OriginalSource)));
+            AddHandler(TreeViewItem.CollapsedEvent, new RoutedEventHandler((s, e) => InvalidateVisualFromItem(e.OriginalSource)));
         }
 
         #endregion
 
         #region Protected Method
 
-        protected override void OnRender(DrawingContext drawingContext)
+        public override void OnApplyTemplate()
         {
-            if (ItemContainerGenerator.Items.Count == 0)
+            base.OnApplyTemplate();
+
+            if (DesignerProperties.GetIsInDesignMode(this))
             {
                 return;
             }
 
-            var item = ItemContainerGenerator.Items[0];
-            DrawLine(item, ItemContainerGenerator, drawingContext);
-            
+            _scrollViewer = GetTemplateChild(PART_SCROLLVIEWER) as ScrollViewer;
+
+            if (_scrollViewer == null)
+            {
+                throw new NotImplementedException(PART_SCROLLVIEWER + " is not found.");
+            }
+
+            _scrollViewer.ScrollChanged += (s, e) => InvalidateVisual();
+        }
+
+        protected override void OnRender(DrawingContext drawingContext)
+        {
             base.OnRender(drawingContext);
+
+            if (ItemContainerGenerator.Items.Count == 0)
+            {
+                return;
+            }
+            
+            var item = ItemContainerGenerator.Items[0];
+
+            drawingContext.DrawRectangle(Background, new Pen(), new Rect(0, 0, ActualWidth, ActualHeight));
+            DrawLine(item, ItemContainerGenerator, drawingContext);
         }
 
         #endregion
@@ -283,6 +327,16 @@ namespace OrgChartWpf.Control
             content.Margin = new Thickness(HorizontalOffset, 0, HorizontalOffset, VerticalOffset);
 
             return content.TransformToAncestor(this).TransformBounds(new Rect(0, 0, content.ActualWidth, content.ActualHeight));
+        }
+
+        private void InvalidateVisualFromItem(object obj)
+        {
+            var item = obj as TreeViewItem;
+
+            if (item?.Items.Count == 1)
+            {
+                InvalidateVisual();
+            }
         }
 
         #endregion

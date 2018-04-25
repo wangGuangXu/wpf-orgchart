@@ -12,14 +12,17 @@
     <Window.Resources>
         <HierarchicalDataTemplate x:Key="HierarchicalDataTemplate"
                                   ItemsSource="{Binding Items}">
-            <TextBlock Text="{Binding Index}"/>
+            <Border Width="60" Height="40"
+                    Background="Transparent" BorderBrush="Gray" BorderThickness="1">
+                <TextBlock Text="{Binding Index}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Border>
         </HierarchicalDataTemplate>
     </Window.Resources>
 
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
@@ -38,12 +41,12 @@
             <TextBlock Text="Horizontal Offset" Margin="0,20"/>
             <Slider x:Name="HorizontalOffset" Minimum="0" Maximum="100" Value="20"/>
         </StackPanel>
-        
+
         <control:OrgChart Grid.Column="1"
                           ItemsSource="{Binding Items}" 
                           ItemTemplate="{DynamicResource HierarchicalDataTemplate}"
                           VerticalOffset="{Binding Value, ElementName=VerticalOffset}"
                           HorizontalOffset="{Binding Value, ElementName=HorizontalOffset}"
-                          Margin="20"/>
+                          Padding="20"/>
     </Grid>
 </Window>
