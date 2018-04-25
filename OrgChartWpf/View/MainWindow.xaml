@@ -1,0 +1,49 @@
+﻿<Window x:Class="OrgChartWpf.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:control="clr-namespace:OrgChartWpf.Control"
+        xmlns:vm="clr-namespace:OrgChartWpf.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Width="1024" Height="768"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <HierarchicalDataTemplate x:Key="HierarchicalDataTemplate"
+                                  ItemsSource="{Binding Items}">
+            <TextBlock Text="{Binding Index}"/>
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="10">
+            <Button Content="Refresh" 
+                    Command="{Binding RefreshCommand}"
+                    Width="70" Height="25"
+                    HorizontalAlignment="Left" Margin="10"/>
+
+            <TextBlock Text="Vertical Offset" Margin="0,10"/>
+            <Slider x:Name="VerticalOffset" Minimum="0" Maximum="100" Value="50"/>
+
+            <TextBlock Text="Horizontal Offset" Margin="0,20"/>
+            <Slider x:Name="HorizontalOffset" Minimum="0" Maximum="100" Value="20"/>
+        </StackPanel>
+        
+        <control:OrgChart Grid.Column="1"
+                          ItemsSource="{Binding Items}" 
+                          ItemTemplate="{DynamicResource HierarchicalDataTemplate}"
+                          VerticalOffset="{Binding Value, ElementName=VerticalOffset}"
+                          HorizontalOffset="{Binding Value, ElementName=HorizontalOffset}"
+                          Margin="20"/>
+    </Grid>
+</Window>
