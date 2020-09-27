@@ -57,14 +57,51 @@ namespace OrgChartWpf.ViewModel
 
         private void CreateItems()
         {
-            _index = 0;
-            Items.Clear();
+            //_index = 0;
+            //Items.Clear();
 
-            var level = _rnd.Next(2, 6);
-            var item = CreateItem();
+            //var level = _rnd.Next(2, 6);
+            //var item = CreateItem();
 
-            CreateItems(item, level);
-            Items.Add(item);
+            //CreateItems(item, level);
+            //Items.Add(item);
+
+            var item0 = new Item(0, "祖先");
+            var item01 = new Item(1, "子:朱合祥");
+
+
+            var item011 = new Item(2, "长子:朱长锁");
+            var item0111 = new Item(1, "子:朱军");
+            var item01111 = new Item(1, "女:朱怡菁");
+            item0111.Items.Add(item01111);
+
+            var item0112 = new Item(1, "女:朱红");
+            item011.Items.Add(item0111);
+            item011.Items.Add(item0112);
+
+            var item012 = new Item(2, "次子:朱锁堂");
+            var item0121 = new Item(3, "子:朱军伟");
+            var item0122 = new Item(3, "女:朱秋红");
+
+            item011.Items.Add(item0121);
+            item011.Items.Add(item0122);
+
+            var item013 = new Item(2, "长子:朱秀绒");
+            var item014 = new Item(2, "次女:朱翠花");
+            var item015 = new Item(2, "三女:朱小琴");
+
+            item01.Items.Add(item011);
+            item01.Items.Add(item012);
+            item01.Items.Add(item013);
+            item01.Items.Add(item014);
+            item01.Items.Add(item015);
+
+            var item02 = new Item(1, "女:(名字不详)");
+
+            item0.Items.Add(item01);
+            item0.Items.Add(item02);
+
+            Items.Add(item0);
         }
 
         private Item CreateItem()

@@ -8,7 +8,7 @@ namespace OrgChartWpf.Control
 {
     public partial class OrgChart : TreeView
     {
-        #region Variable
+        #region 变量
 
         private const string PART_SCROLLVIEWER = "PART_Scrollviewer";
         private const string PART_BORDER = "PART_Border";
@@ -34,6 +34,9 @@ namespace OrgChartWpf.Control
             orgChart.InvalidateVisual();
         }
 
+        /// <summary>
+        /// 背景画刷
+        /// </summary>
         public new Brush Background
         {
             get { return (Brush)GetValue(BackgroundProperty); }
@@ -44,6 +47,9 @@ namespace OrgChartWpf.Control
 
         #region LineBrush
 
+        /// <summary>
+        /// 线性画刷
+        /// </summary>
         public static readonly DependencyProperty LineBrushProperty =
             DependencyProperty.Register("LineBrush",
                 typeof(Brush),
@@ -58,6 +64,9 @@ namespace OrgChartWpf.Control
             orgChart.InvalidateVisual();
         }
 
+        /// <summary>
+        /// 线性画刷
+        /// </summary>
         public Brush LineBrush
         {
             get { return (Brush)GetValue(LineBrushProperty); }
@@ -81,7 +90,9 @@ namespace OrgChartWpf.Control
             orgChart._pen.Thickness = (double)e.NewValue;
             orgChart.InvalidateVisual();
         }
-
+        /// <summary>
+        /// 线条粗细
+        /// </summary>
         public double LineThickness
         {
             get { return (double)GetValue(LineThicknessProperty); }
@@ -92,6 +103,9 @@ namespace OrgChartWpf.Control
 
         #region ArrowSize
 
+        /// <summary>
+        /// 箭头大小
+        /// </summary>
         public static readonly DependencyProperty ArrowSizeProperty =
             DependencyProperty.Register("ArrowSize",
                 typeof(double),
@@ -106,6 +120,9 @@ namespace OrgChartWpf.Control
             orgChart.InvalidateVisual();
         }
 
+        /// <summary>
+        /// 箭头大小
+        /// </summary>
         public double ArrowSize
         {
             get { return (double)GetValue(ArrowSizeProperty); }
@@ -129,6 +146,9 @@ namespace OrgChartWpf.Control
             orgChart.InvalidateVisual();
         }
 
+        /// <summary>
+        /// 垂直偏移量
+        /// </summary>
         public double VerticalOffset
         {
             get { return (double)GetValue(VerticalOffsetProperty); }
@@ -207,6 +227,10 @@ namespace OrgChartWpf.Control
             _scrollViewer.ScrollChanged += (s, e) => InvalidateVisual();
         }
 
+        /// <summary>
+        /// 渲染
+        /// </summary>
+        /// <param name="drawingContext"></param>
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
@@ -215,7 +239,7 @@ namespace OrgChartWpf.Control
             {
                 return;
             }
-            
+
             var item = ItemContainerGenerator.Items[0];
 
             drawingContext.DrawRectangle(Background, new Pen(), new Rect(0, 0, ActualWidth, ActualHeight));
@@ -226,40 +250,49 @@ namespace OrgChartWpf.Control
 
         #region Private Method
 
+        /// <summary>
+        /// 绘制线条
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="itemContainerGenerator"></param>
+        /// <param name="drawingContext"></param>
         private void DrawLine(object item, ItemContainerGenerator itemContainerGenerator, DrawingContext drawingContext)
         {
             var rootItem = itemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
-
-            if (rootItem == null || !rootItem.IsExpanded) return;
+            if (rootItem == null || !rootItem.IsExpanded)
+            {
+                return;
+            }
 
             var items = rootItem.ItemContainerGenerator.Items;
-
-            if (items.Count > 0)
+            if (items.Count <= 0)
             {
-                var firstItem = rootItem.ItemContainerGenerator.ContainerFromIndex(0) as TreeViewItem;
-                var lastItem = rootItem.ItemContainerGenerator.ContainerFromIndex(items.Count - 1) as TreeViewItem;
-
-                var firstItemRect = GetItemRect(firstItem);
-                var rootItemRect = GetItemRect(rootItem);
-
-                var lineHeight = (firstItemRect.Top - rootItemRect.Bottom) / 2;
-
-                DrawBottomLine(rootItem, lineHeight, drawingContext);
-                DrawTopLine(firstItem, lineHeight, drawingContext);
-
-                DrawLine(firstItem.Header, rootItem.ItemContainerGenerator, drawingContext);
-                
-                for (int i = 1; i < items.Count; i++)
-                {
-                    var _item = items[i];
-                    var subItem = rootItem.ItemContainerGenerator.ContainerFromItem(_item) as TreeViewItem;
-                      
-                    DrawTopLine(subItem, lineHeight, drawingContext);
-                    DrawLine(_item, rootItem.ItemContainerGenerator, drawingContext);
-                }
-
-                DrawHorizontalLine(firstItem, lastItem, lineHeight, drawingContext);
+                return;
             }
+
+            var firstItem = rootItem.ItemContainerGenerator.ContainerFromIndex(0) as TreeViewItem;
+            var lastItem = rootItem.ItemContainerGenerator.ContainerFromIndex(items.Count - 1) as TreeViewItem;
+
+            var firstItemRect = GetItemRect(firstItem);
+            var rootItemRect = GetItemRect(rootItem);
+
+            var lineHeight = (firstItemRect.Top - rootItemRect.Bottom) / 2;
+
+            DrawBottomLine(rootItem, lineHeight, drawingContext);
+            DrawTopLine(firstItem, lineHeight, drawingContext);
+
+            DrawLine(firstItem.Header, rootItem.ItemContainerGenerator, drawingContext);
+
+            for (int i = 1; i < items.Count; i++)
+            {
+                var _item = items[i];
+                var subItem = rootItem.ItemContainerGenerator.ContainerFromItem(_item) as TreeViewItem;
+
+                DrawTopLine(subItem, lineHeight, drawingContext);
+                DrawLine(_item, rootItem.ItemContainerGenerator, drawingContext);
+            }
+
+            DrawHorizontalLine(firstItem, lastItem, lineHeight, drawingContext);
         }
 
         private void DrawBottomLine(TreeViewItem item, double lineHeight, DrawingContext drawingContext)
@@ -268,10 +301,16 @@ namespace OrgChartWpf.Control
 
             var point1 = new Point(rect.X + rect.Width / 2, rect.Y + rect.Height);
             var point2 = new Point(point1.X, point1.Y + lineHeight);
-            
+
             drawingContext.DrawLine(_pen, point1, point2);
         }
 
+        /// <summary>
+        /// 绘制顶部线条
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="lineHeight"></param>
+        /// <param name="drawingContext"></param>
         private void DrawTopLine(TreeViewItem item, double lineHeight, DrawingContext drawingContext)
         {
             var rect = GetItemRect(item);
@@ -284,8 +323,15 @@ namespace OrgChartWpf.Control
             DrawTriangle(rect, lineHeight, drawingContext);
         }
 
+        /// <summary>
+        /// 绘制三角形
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <param name="lineHeight"></param>
+        /// <param name="drawingContext"></param>
         private void DrawTriangle(Rect rect, double lineHeight, DrawingContext drawingContext)
         {
+            //箭头
             var arrowHalfSize = ArrowSize / 2;
             var point1 = new Point(rect.X + rect.Width / 2 - arrowHalfSize, rect.Y - arrowHalfSize);
             var point2 = new Point(point1.X + ArrowSize, point1.Y);
@@ -304,22 +350,34 @@ namespace OrgChartWpf.Control
             drawingContext.DrawGeometry(_pen.Brush, _pen, streamGeometry);
         }
 
+        /// <summary>
+        /// 绘制水平线
+        /// </summary>
+        /// <param name="firstItem"></param>
+        /// <param name="lastItem"></param>
+        /// <param name="lineHeight">行高</param>
+        /// <param name="drawingContext"></param>
         private void DrawHorizontalLine(TreeViewItem firstItem, TreeViewItem lastItem, double lineHeight, DrawingContext drawingContext)
         {
             var rect1 = GetItemRect(firstItem);
             var rect2 = GetItemRect(lastItem);
-            
+
             var point1 = new Point(rect1.X + rect1.Width / 2, rect1.Y - lineHeight);
             var point2 = new Point(rect2.X + rect2.Width / 2, rect2.Y - lineHeight);
 
             drawingContext.DrawLine(_pen, point1, point2);
         }
 
+        /// <summary>
+        /// 绘制矩形项
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private Rect GetItemRect(TreeViewItem item)
         {
             var content = item.Template.FindName(PART_BORDER, item) as FrameworkElement;
 
-            if(content == null)
+            if (content == null)
             {
                 throw new NotImplementedException(PART_BORDER + " is not found.");
             }
@@ -329,6 +387,10 @@ namespace OrgChartWpf.Control
             return content.TransformToAncestor(this).TransformBounds(new Rect(0, 0, content.ActualWidth, content.ActualHeight));
         }
 
+        /// <summary>
+        /// 使可视项无效
+        /// </summary>
+        /// <param name="obj"></param>
         private void InvalidateVisualFromItem(object obj)
         {
             var item = obj as TreeViewItem;
