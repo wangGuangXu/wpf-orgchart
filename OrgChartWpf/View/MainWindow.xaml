@@ -30,17 +30,17 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="70" />
+            <RowDefinition Height="50" />
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Margin="10" Grid.Row="0" Orientation="Horizontal" >
             <Button Content="刷新" Command="{Binding RefreshCommand}" Width="70" Height="25" HorizontalAlignment="Left" Margin="10,0" />
 
-            <TextBlock Text="垂直偏移量" Margin="0,0"/>
-            <Slider x:Name="VerticalOffset" Minimum="0" Maximum="150" Value="80" Margin="10,0" Width="150" />
+            <TextBlock Text="垂直偏移量" Margin="10,0" VerticalAlignment="Center" />
+            <Slider x:Name="VerticalOffset" Minimum="0" Maximum="150" Value="50" Margin="10,10" Width="150" />
 
-            <TextBlock Text="水平偏移量" Margin="0,0"/>
-            <Slider x:Name="HorizontalOffset" Minimum="0" Maximum="100" Value="0" Margin="10,0" Height="70" Width="150" />
+            <TextBlock Text="水平偏移量" Margin="10,10" VerticalAlignment="Center"/>
+            <Slider x:Name="HorizontalOffset" Minimum="0" Maximum="100" Value="0" Margin="10,10"  Width="150" />
         </StackPanel>
 
         <control:OrgChart Grid.Row="1"

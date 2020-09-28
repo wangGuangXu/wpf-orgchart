@@ -6,6 +6,7 @@
           mc:Ignorable="d" 
           d:DesignHeight="450" d:DesignWidth="800"
           Style="{DynamicResource TreeViewStyle}">
+    
     <TreeView.Resources>
         <Style x:Key="TreeViewStyle" TargetType="{x:Type TreeView}">
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>

@@ -8,16 +8,14 @@ namespace OrgChartWpf.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        #region Variable
+        #region 变量
 
         private int _index = 0;
         private Random _rnd = new Random();
 
         #endregion
 
-        #region Property
-
-        #region Items
+        #region 属性
 
         private ObservableCollection<Item> _items;
         public ObservableCollection<Item> Items
@@ -27,24 +25,20 @@ namespace OrgChartWpf.ViewModel
 
         #endregion
 
-        #endregion
-
-        #region Command
-
-        #region Refresh
+        #region 命令
 
         private RelayCommand _refreshCommand;
+        /// <summary>
+        /// 刷新命令
+        /// </summary>
         public RelayCommand RefreshCommand
         {
-            get { return _refreshCommand ?? (_refreshCommand = 
-                    new RelayCommand(p => CreateItems(), p => true)); }
+            get { return _refreshCommand ?? (_refreshCommand = new RelayCommand(p => CreateItems(), p => true)); }
         }
 
         #endregion
 
-        #endregion
-
-        #region Constructor
+        #region 构造函数
 
         public MainViewModel()
         {
@@ -53,8 +47,10 @@ namespace OrgChartWpf.ViewModel
 
         #endregion
 
-        #region Private Method
-
+        #region 私有方法
+        /// <summary>
+        /// 创建数据项
+        /// </summary>
         private void CreateItems()
         {
             //_index = 0;
@@ -65,6 +61,8 @@ namespace OrgChartWpf.ViewModel
 
             //CreateItems(item, level);
             //Items.Add(item);
+
+            Items.Clear();
 
             var item0 = new Item(0, "祖先");
             var item01 = new Item(1, "子:朱合祥");

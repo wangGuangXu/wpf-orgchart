@@ -14,18 +14,15 @@ namespace OrgChartWpf.Control
         private const string PART_BORDER = "PART_Border";
 
         private ScrollViewer _scrollViewer;
+        private Pen _pen;
 
         #endregion
 
-        #region Dependency Property
+        #region 依赖属性
 
-        #region Background
+        #region 背景
 
-        public static readonly new DependencyProperty BackgroundProperty =
-            DependencyProperty.Register("Background",
-                typeof(Brush),
-                typeof(OrgChart),
-                new PropertyMetadata(Brushes.White, ChangedBackgroundProperty));
+        public static readonly new DependencyProperty BackgroundProperty =  DependencyProperty.Register("Background", typeof(Brush),typeof(OrgChart),new PropertyMetadata(Brushes.White, ChangedBackgroundProperty));
 
         private static void ChangedBackgroundProperty(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
@@ -45,16 +42,12 @@ namespace OrgChartWpf.Control
 
         #endregion        
 
-        #region LineBrush
+        #region 线性画刷
 
         /// <summary>
         /// 线性画刷
         /// </summary>
-        public static readonly DependencyProperty LineBrushProperty =
-            DependencyProperty.Register("LineBrush",
-                typeof(Brush),
-                typeof(OrgChart),
-                new PropertyMetadata(Brushes.Gray, ChangedLineBrushProperty));
+        public static readonly DependencyProperty LineBrushProperty = DependencyProperty.Register("LineBrush", typeof(Brush),  typeof(OrgChart), new PropertyMetadata(Brushes.Gray, ChangedLineBrushProperty));
 
         private static void ChangedLineBrushProperty(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
@@ -75,13 +68,9 @@ namespace OrgChartWpf.Control
 
         #endregion        
 
-        #region LineThickness
+        #region 线条粗细
 
-        public static readonly DependencyProperty LineThicknessProperty =
-            DependencyProperty.Register("LineThickness",
-                typeof(double),
-                typeof(OrgChart),
-                new PropertyMetadata(1d, ChangedLineThicknessProperty));
+        public static readonly DependencyProperty LineThicknessProperty =DependencyProperty.Register("LineThickness", typeof(double),  typeof(OrgChart),  new PropertyMetadata(1d, ChangedLineThicknessProperty));
 
         private static void ChangedLineThicknessProperty(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
@@ -101,16 +90,12 @@ namespace OrgChartWpf.Control
 
         #endregion
 
-        #region ArrowSize
+        #region 箭头大小
 
         /// <summary>
         /// 箭头大小
         /// </summary>
-        public static readonly DependencyProperty ArrowSizeProperty =
-            DependencyProperty.Register("ArrowSize",
-                typeof(double),
-                typeof(OrgChart),
-                new PropertyMetadata(6d, ChangedArrowSizeProperty));
+        public static readonly DependencyProperty ArrowSizeProperty =DependencyProperty.Register("ArrowSize",   typeof(double),  typeof(OrgChart), new PropertyMetadata(6d, ChangedArrowSizeProperty));
 
         private static void ChangedArrowSizeProperty(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
@@ -131,13 +116,9 @@ namespace OrgChartWpf.Control
 
         #endregion
 
-        #region VerticalOffset
+        #region 垂直偏移量
 
-        public static readonly DependencyProperty VerticalOffsetProperty =
-            DependencyProperty.Register("VerticalOffset",
-                typeof(double),
-                typeof(OrgChart),
-                new PropertyMetadata(50d, ChangedVerticalOffsetProperty));
+        public static readonly DependencyProperty VerticalOffsetProperty =DependencyProperty.Register("VerticalOffset",typeof(double),typeof(OrgChart), new PropertyMetadata(50d, ChangedVerticalOffsetProperty));
 
         private static void ChangedVerticalOffsetProperty(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
@@ -157,13 +138,9 @@ namespace OrgChartWpf.Control
 
         #endregion
 
-        #region HorizontalOffset
+        #region 水平偏移量
 
-        public static readonly DependencyProperty HorizontalOffsetProperty =
-            DependencyProperty.Register("HorizontalOffset",
-                typeof(double),
-                typeof(OrgChart),
-                new PropertyMetadata(20d, ChangedHorizontalOffsetProperty));
+        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(OrgChart), new PropertyMetadata(20d, ChangedHorizontalOffsetProperty));
 
         private static void ChangedHorizontalOffsetProperty(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
@@ -171,7 +148,9 @@ namespace OrgChartWpf.Control
 
             orgChart.InvalidateVisual();
         }
-
+        /// <summary>
+        /// 水平偏移量
+        /// </summary>
         public double HorizontalOffset
         {
             get { return (double)GetValue(HorizontalOffsetProperty); }
@@ -182,13 +161,7 @@ namespace OrgChartWpf.Control
 
         #endregion
 
-        #region Variable
-
-        private Pen _pen;
-
-        #endregion
-
-        #region Constructor
+        #region 构造函数
 
         public OrgChart()
         {
@@ -206,8 +179,11 @@ namespace OrgChartWpf.Control
 
         #endregion
 
-        #region Protected Method
+        #region 私有方法
 
+        /// <summary>
+        /// 应用模板
+        /// </summary>
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -221,7 +197,7 @@ namespace OrgChartWpf.Control
 
             if (_scrollViewer == null)
             {
-                throw new NotImplementedException(PART_SCROLLVIEWER + " is not found.");
+                throw new NotImplementedException(PART_SCROLLVIEWER + " 找不到。");
             }
 
             _scrollViewer.ScrollChanged += (s, e) => InvalidateVisual();
@@ -248,7 +224,7 @@ namespace OrgChartWpf.Control
 
         #endregion
 
-        #region Private Method
+        #region 私有方法
 
         /// <summary>
         /// 绘制线条
@@ -369,17 +345,16 @@ namespace OrgChartWpf.Control
         }
 
         /// <summary>
-        /// 绘制矩形项
+        /// 获取项目矩形
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
         private Rect GetItemRect(TreeViewItem item)
         {
             var content = item.Template.FindName(PART_BORDER, item) as FrameworkElement;
-
             if (content == null)
             {
-                throw new NotImplementedException(PART_BORDER + " is not found.");
+                throw new NotImplementedException(PART_BORDER + " 找不到.");
             }
 
             content.Margin = new Thickness(HorizontalOffset, 0, HorizontalOffset, VerticalOffset);
