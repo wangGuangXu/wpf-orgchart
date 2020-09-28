@@ -36,6 +36,15 @@ namespace OrgChartWpf.ViewModel
             get { return _refreshCommand ?? (_refreshCommand = new RelayCommand(p => CreateItems(), p => true)); }
         }
 
+        private RelayCommand _printCommand;
+        /// <summary>
+        /// 打印
+        /// </summary>
+        public RelayCommand PrintCommand
+        {
+            get { return _printCommand ?? (_printCommand = new RelayCommand(a => Print(), a => true)); }
+        }
+
         #endregion
 
         #region 构造函数
@@ -122,6 +131,14 @@ namespace OrgChartWpf.ViewModel
                     CreateItems(childItem, level - 1);
                 }
             }
+        }
+
+        /// <summary>
+        /// 打印
+        /// </summary>
+        private void Print()
+        {
+
         }
 
         #endregion
