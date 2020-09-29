@@ -14,7 +14,7 @@
                                   ItemsSource="{Binding Items}" >
             <Border Width="100" Height="40"  Margin="15,0,15,0"
                     Background="Transparent" BorderBrush="Gray" BorderThickness="1">
-                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="15,0" />
             </Border>
         </HierarchicalDataTemplate>
     </Window.Resources>
@@ -49,6 +49,6 @@
                           ItemTemplate="{DynamicResource HierarchicalDataTemplate}"
                           VerticalOffset="{Binding Value, ElementName=VerticalOffset}"
                           HorizontalOffset="{Binding Value, ElementName=HorizontalOffset}"
-                          Padding="0"/>
+                          Padding="10"/>
     </Grid>
 </Window>

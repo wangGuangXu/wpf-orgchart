@@ -194,7 +194,6 @@ namespace OrgChartWpf.Control
             }
 
             _scrollViewer = GetTemplateChild(PART_SCROLLVIEWER) as ScrollViewer;
-
             if (_scrollViewer == null)
             {
                 throw new NotImplementedException(PART_SCROLLVIEWER + " 找不到。");
@@ -266,6 +265,7 @@ namespace OrgChartWpf.Control
             for (int i = 1; i < items.Count; i++)
             {
                 var _item = items[i];
+                //子项
                 var subItem = rootItem.ItemContainerGenerator.ContainerFromItem(_item) as TreeViewItem;
 
                 DrawTopLine(subItem, lineHeight, drawingContext);
@@ -323,6 +323,7 @@ namespace OrgChartWpf.Control
             var point2 = new Point(point1.X + ArrowSize, point1.Y);
             var point3 = new Point(point2.X - arrowHalfSize, point2.Y + arrowHalfSize);
 
+            //几何流
             var streamGeometry = new StreamGeometry();
 
             using (var geometryContext = streamGeometry.Open())
