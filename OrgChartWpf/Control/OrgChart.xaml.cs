@@ -234,6 +234,7 @@ namespace OrgChartWpf.Control
         /// <param name="drawingContext"></param>
         private void DrawLine(object item, ItemContainerGenerator itemContainerGenerator, DrawingContext drawingContext)
         {
+            //根节点项
             var rootItem = itemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
             if (rootItem == null || !rootItem.IsExpanded)
             {
@@ -241,17 +242,20 @@ namespace OrgChartWpf.Control
             }
 
             var items = rootItem.ItemContainerGenerator.Items;
-            if (items.Count <= 0)
+            if (items.Count <1)
             {
                 return;
             }
 
+            //第一项
             var firstItem = rootItem.ItemContainerGenerator.ContainerFromIndex(0) as TreeViewItem;
+            //最后一项
             var lastItem = rootItem.ItemContainerGenerator.ContainerFromIndex(items.Count - 1) as TreeViewItem;
 
             var firstItemRect = GetItemRect(firstItem);
             var rootItemRect = GetItemRect(rootItem);
 
+            //行高
             var lineHeight = (firstItemRect.Top - rootItemRect.Bottom) / 2;
 
             DrawBottomLine(rootItem, lineHeight, drawingContext);
@@ -271,6 +275,12 @@ namespace OrgChartWpf.Control
             DrawHorizontalLine(firstItem, lastItem, lineHeight, drawingContext);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="lineHeight"></param>
+        /// <param name="drawingContext"></param>
         private void DrawBottomLine(TreeViewItem item, double lineHeight, DrawingContext drawingContext)
         {
             var rect = GetItemRect(item);
@@ -307,7 +317,7 @@ namespace OrgChartWpf.Control
         /// <param name="drawingContext"></param>
         private void DrawTriangle(Rect rect, double lineHeight, DrawingContext drawingContext)
         {
-            //箭头
+            //箭头尺寸
             var arrowHalfSize = ArrowSize / 2;
             var point1 = new Point(rect.X + rect.Width / 2 - arrowHalfSize, rect.Y - arrowHalfSize);
             var point2 = new Point(point1.X + ArrowSize, point1.Y);
@@ -318,7 +328,7 @@ namespace OrgChartWpf.Control
             using (var geometryContext = streamGeometry.Open())
             {
                 geometryContext.BeginFigure(point1, true, true);
-                PointCollection points = new PointCollection { point2, point3 };
+                var points = new PointCollection { point2, point3 };
                 geometryContext.PolyLineTo(points, true, true);
             }
 
@@ -369,7 +379,6 @@ namespace OrgChartWpf.Control
         private void InvalidateVisualFromItem(object obj)
         {
             var item = obj as TreeViewItem;
-
             if (item?.Items.Count == 1)
             {
                 InvalidateVisual();
