@@ -370,6 +370,7 @@ namespace OrgChartWpf.Control
 
             content.Margin = new Thickness(HorizontalOffset, 0, HorizontalOffset, VerticalOffset);
 
+            //获取元素的相对坐标并变换
             return content.TransformToAncestor(this).TransformBounds(new Rect(0, 0, content.ActualWidth, content.ActualHeight));
         }
 
