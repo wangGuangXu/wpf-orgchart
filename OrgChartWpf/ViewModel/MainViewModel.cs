@@ -6,6 +6,9 @@ using System.ComponentModel;
 
 namespace OrgChartWpf.ViewModel
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class MainViewModel : INotifyPropertyChanged
     {
         #region 变量

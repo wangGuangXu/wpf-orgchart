@@ -3,6 +3,9 @@ using System.Windows.Controls;
 
 namespace OrgChartWpf.View
 {
+    /// <summary>
+    /// https://www.cnblogs.com/xcong/p/3712898.html
+    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -10,6 +13,11 @@ namespace OrgChartWpf.View
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
             PrintDialog printDialog = new PrintDialog();
