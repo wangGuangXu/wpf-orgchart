@@ -10,9 +10,11 @@
         Width="1024" Height="768"
         WindowStartupLocation="CenterScreen" WindowState="Maximized" >
     <Window.Resources>
-        <HierarchicalDataTemplate x:Key="HierarchicalDataTemplate" ItemsSource="{Binding Items}" >
-            <Border Width="100" Height="40" Margin="0,0,0,0" Background="Transparent" BorderBrush="Gray" BorderThickness="1">
-                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0" />
+        <HierarchicalDataTemplate x:Key="HierarchicalDataTemplate"
+                                  ItemsSource="{Binding Items}" >
+            <Border Width="100" Height="40"  Margin="15,0,15,0"
+                    Background="Transparent" BorderBrush="Gray" BorderThickness="1">
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="15,0" />
             </Border>
         </HierarchicalDataTemplate>
     </Window.Resources>
@@ -28,17 +30,17 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="50" />
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Margin="0" Grid.Row="0" Orientation="Horizontal" >
+        <StackPanel Margin="10" Grid.Row="0" Orientation="Horizontal" >
             <Button Content="刷新" Command="{Binding RefreshCommand}" Width="70" Height="25" HorizontalAlignment="Left" Margin="10,0" />
 
             <TextBlock Text="垂直偏移量" Margin="10,0" VerticalAlignment="Center" />
-            <Slider x:Name="VerticalOffset" Minimum="0" Maximum="100" Value="50" Margin="10,0" Width="150" Height="20" />
+            <Slider x:Name="VerticalOffset" Minimum="0" Maximum="150" Value="50" Margin="10,0" Width="150" Height="20" />
 
-            <TextBlock Text="水平偏移量" Margin="10,0" VerticalAlignment="Center"/>
-            <Slider x:Name="HorizontalOffset" Minimum="0" Maximum="100" Value="10" Margin="10,0"  Width="150" Height="20" />
+            <TextBlock Text="水平偏移量" Margin="10,10" VerticalAlignment="Center"/>
+            <Slider x:Name="HorizontalOffset" Minimum="0" Maximum="100" Value="0" Margin="10,0"  Width="150" Height="20" />
             <Button Content="打印" Name="btnPrint" Click="btnPrint_Click" Width="70" Height="25" HorizontalAlignment="Left" Margin="10,0" />
         </StackPanel>
 
@@ -47,13 +49,6 @@
                           ItemTemplate="{DynamicResource HierarchicalDataTemplate}"
                           VerticalOffset="{Binding Value, ElementName=VerticalOffset}"
                           HorizontalOffset="{Binding Value, ElementName=HorizontalOffset}"
-                          Padding="10">
-            <control:OrgChart.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="新增子节点" Name="menuItemChild"/>
-                    <MenuItem Header="新增兄弟节点" Name="menuItemBrother"/>
-                </ContextMenu>
-            </control:OrgChart.ContextMenu>
-        </control:OrgChart>
+                          Padding="10"/>
     </Grid>
 </Window>
