@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:control="clr-namespace:OrgChartWpf.Control"
         xmlns:vm="clr-namespace:OrgChartWpf.ViewModel"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Ioc;assembly=GalaSoft.MvvmLight.Extras" xmlns:cmd1="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
         Title="MainWindow"
         Width="1024" Height="768"
@@ -49,6 +51,18 @@
                           ItemTemplate="{DynamicResource HierarchicalDataTemplate}"
                           VerticalOffset="{Binding Value, ElementName=VerticalOffset}"
                           HorizontalOffset="{Binding Value, ElementName=HorizontalOffset}"
-                          Padding="10"/>
+                          Padding="10">
+            <control:OrgChart.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="新增子节点"  />
+                    <MenuItem Header="新增兄弟节点"/>
+                </ContextMenu>
+            </control:OrgChart.ContextMenu>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseRightButtonDown">
+                    <cmd1:EventToCommand Command="{Binding SelectTreeNodeCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </control:OrgChart>
     </Grid>
 </Window>

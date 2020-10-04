@@ -1,15 +1,23 @@
-﻿using OrgChartWpf.Command;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using OrgChartWpf.Model;
+using Prism.Commands;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using RelayCommand = OrgChartWpf.Command.RelayCommand;
 
 namespace OrgChartWpf.ViewModel
 {
     /// <summary>
     /// 
     /// </summary>
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : ObservableObject
     {
         #region 变量
 
@@ -43,9 +51,18 @@ namespace OrgChartWpf.ViewModel
         /// <summary>
         /// 打印
         /// </summary>
-        public RelayCommand PrintCommand
+        public Command.RelayCommand PrintCommand
         {
             get { return _printCommand ?? (_printCommand = new RelayCommand(a => Print(), a => true)); }
+        }
+
+        private ICommand _selectTreeNodeCommandExec;
+        /// <summary>
+        /// 右键菜单
+        /// </summary>
+        public ICommand SelectTreeNodeCommand
+        {
+            get { return _selectTreeNodeCommandExec ?? (_selectTreeNodeCommandExec = new DelegateCommand<RoutedEventArgs>(SelectTreeNodeCommandExec)); }
         }
 
         #endregion
@@ -58,6 +75,41 @@ namespace OrgChartWpf.ViewModel
         }
 
         #endregion
+
+        private void SelectTreeNodeCommandExec(RoutedEventArgs e)
+        {
+            var treeViewItem = VisualUpwardSearch<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
+            if (treeViewItem == null)
+            {
+                return;
+            }
+
+            var item = treeViewItem.Header as Item;
+            if (item!=null)
+            {
+                var itemzrj = new Item(3, "长子:朱镕基");
+                item.Items.Add(itemzrj);
+            }
+
+            treeViewItem.Focus();
+            e.Handled = true;
+        }
+
+        private static DependencyObject VisualUpwardSearch<M>(DependencyObject source)
+        {
+            while (source != null && source.GetType() != typeof(M))
+            {
+                if (source is Visual || source is Visual3D)
+                {
+                    source = VisualTreeHelper.GetParent(source);
+                }
+                else
+                {
+                    source = LogicalTreeHelper.GetParent(source);
+                }
+            }
+            return source;
+        }
 
         #region 私有方法
         /// <summary>
