@@ -36,6 +36,7 @@ namespace OrgChartWpf.View
             this.orgChart.Arrange(new Rect(point.X, point.Y, orgChart.ActualWidth, orgChart.ActualHeight));
         }
 
+        //预览树图
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
             var window = new WinTreeBitmap();

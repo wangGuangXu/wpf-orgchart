@@ -65,6 +65,15 @@ namespace OrgChartWpf.ViewModel
             get { return _selectTreeNodeCommandExec ?? (_selectTreeNodeCommandExec = new DelegateCommand<RoutedEventArgs>(SelectTreeNodeCommandExec)); }
         }
 
+        private ICommand _addChildCommand;
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand AddChildCommand
+        {
+            get { return _addChildCommand ?? (_addChildCommand = new RelayCommand<object>(a => AddChild(a), a => true)); }
+        }
+
         #endregion
 
         #region 构造函数
@@ -76,6 +85,21 @@ namespace OrgChartWpf.ViewModel
 
         #endregion
 
+
+        private void AddChild(object treeViewItemObject)
+        {
+            var treeViewItem = treeViewItemObject as TreeViewItem;
+            if (treeViewItem==null)
+            {
+                return;
+            }
+
+            var item = treeViewItem.Header as Item;
+
+            var itemzrj = new Item(3, "长子:朱镕基");
+            item.Items.Add(itemzrj);
+        }
+
         private void SelectTreeNodeCommandExec(RoutedEventArgs e)
         {
             var treeViewItem = VisualUpwardSearch<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
@@ -84,12 +108,12 @@ namespace OrgChartWpf.ViewModel
                 return;
             }
 
-            var item = treeViewItem.Header as Item;
-            if (item!=null)
-            {
-                var itemzrj = new Item(3, "长子:朱镕基");
-                item.Items.Add(itemzrj);
-            }
+            //var item = treeViewItem.Header as Item;
+            //if (item!=null)
+            //{
+            //    var itemzrj = new Item(3, "长子:朱镕基");
+            //    item.Items.Add(itemzrj);
+            //}
 
             treeViewItem.Focus();
             e.Handled = true;

@@ -55,7 +55,7 @@
                           Padding="10">
             <control:OrgChart.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="新增子节点"  />
+                    <MenuItem Header="新增子节点" Command="{Binding AddChildCommand}" CommandParameter="{Binding }" x:Name="addChild" />
                     <MenuItem Header="新增兄弟节点"/>
                 </ContextMenu>
             </control:OrgChart.ContextMenu>
