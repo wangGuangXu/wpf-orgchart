@@ -198,15 +198,5 @@ namespace OrgChartWpf.ViewModel
 
         #endregion
 
-        #region PropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }
