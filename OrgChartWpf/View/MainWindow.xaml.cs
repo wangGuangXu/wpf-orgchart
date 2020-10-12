@@ -35,5 +35,12 @@ namespace OrgChartWpf.View
             //设置为原来的位置
             this.orgChart.Arrange(new Rect(point.X, point.Y, orgChart.ActualWidth, orgChart.ActualHeight));
         }
-    }
+
+        private void btnPreview_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new WinTreeBitmap();
+            window.ShowDialog();
+        }
+
+   }
 }

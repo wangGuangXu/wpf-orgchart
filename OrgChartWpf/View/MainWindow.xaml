@@ -44,6 +44,7 @@
             <TextBlock Text="水平偏移量" Margin="10,0" VerticalAlignment="Center"/>
             <Slider x:Name="HorizontalOffset" Minimum="0" Maximum="100" Value="10" Margin="0,0"  Width="150" Height="20" />
             <Button Content="打印" Name="btnPrint" Click="btnPrint_Click" Width="70" Height="25" HorizontalAlignment="Left" Margin="10,0" />
+            <Button Content="预览树图" Name="btnPreview" Click="btnPreview_Click" Width="70" Height="25" HorizontalAlignment="Left" Margin="10,0" />
         </StackPanel>
 
         <control:OrgChart Grid.Row="1" x:Name="orgChart"

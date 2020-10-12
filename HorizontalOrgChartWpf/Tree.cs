@@ -103,7 +103,11 @@ namespace HorizontalOrgChartWpf
         /// <param name="level"></param>
         private void GetTreeLayers(List<List<Tree<T>>> layers,List<Tree<T>> childs,int level)
         {
-            if (childs.Count == 0) return;
+            if (childs.Count == 0)
+            {
+                return;
+            }
+
             if (layers.Count <= level)
             {
                 layers.Add(new List<Tree<T>>());
@@ -126,12 +130,18 @@ namespace HorizontalOrgChartWpf
         void SetRectangle(int level, int height, int hInterval, int vInterval, int left)
         {
             int index = 0;
-            if (Parent != null) index = Parent.Childs.IndexOf(this);
+            if (Parent != null)
+            {
+                index = Parent.Childs.IndexOf(this);
+            }
 
             if (Childs.Count == 0)
             {
                 // 没有儿子，就向前靠
-                if (left > 0) left += hInterval;
+                if (left > 0)
+                {
+                    left += hInterval;
+                }
             }
             else
             {
@@ -170,6 +180,11 @@ namespace HorizontalOrgChartWpf
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         void Offset(int x, int y)
         {
             _rect.Offset(x, y);
@@ -182,11 +197,21 @@ namespace HorizontalOrgChartWpf
 
         public Bitmap DrawAsImage()
         {
-            return DrawAsImage(Pens.Black, new Font("宋体", 10.5f), 26, 20, 5, 20, 26);
+            return DrawAsImage(Pens.Black, new Font("微软雅黑", 10.5f), 26, 20, 5, 20, 26);
         }
 
-        public Bitmap DrawAsImage(Pen pen, Font font, int h, int horPadding,
-            int horInterval, int verInterval, int borderWidth)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pen"></param>
+        /// <param name="font"></param>
+        /// <param name="h"></param>
+        /// <param name="horPadding"></param>
+        /// <param name="horInterval"></param>
+        /// <param name="verInterval"></param>
+        /// <param name="borderWidth"></param>
+        /// <returns></returns>
+        public Bitmap DrawAsImage(Pen pen, Font font, int h, int horPadding, int horInterval, int verInterval, int borderWidth)
         {
             Bitmap bmp = new Bitmap(1, 1);
             Graphics g = Graphics.FromImage(bmp);
@@ -230,6 +255,7 @@ namespace HorizontalOrgChartWpf
             bmp = new Bitmap(maxWidth, maxHeight);
             g = Graphics.FromImage(bmp);
             g.Clear(Color.White);
+
             StringFormat format = (StringFormat)StringFormat.GenericDefault.Clone();
             format.Alignment = StringAlignment.Center;
             format.LineAlignment = StringAlignment.Center;
@@ -242,8 +268,8 @@ namespace HorizontalOrgChartWpf
                     // 画字
                     rec = (Rectangle)layers[i][j].Rect;
                     g.DrawRectangle(pen, rec);
-                    g.DrawString(layers[i][j].Content.ToString(), font, new SolidBrush(pen.Color),
-                        rec, format);
+                    g.DrawString(layers[i][j].Content.ToString(), font, new SolidBrush(pen.Color), rec, format);
+
                     // 画到父亲的线
                     if (layers[i][j].Parent != null)
                     {

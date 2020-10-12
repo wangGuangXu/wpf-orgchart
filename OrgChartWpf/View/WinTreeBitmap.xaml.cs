@@ -1,8 +1,11 @@
-﻿using System;
+﻿using HorizontalOrgChartWpf;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,19 +13,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HorizontalOrgChartWpf
+namespace OrgChartWpf.View
 {
     /// <summary>
-    /// MainWindow.xaml 的交互逻辑
+    /// WinTreeBitmap.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class WinTreeBitmap : Window
     {
-        public MainWindow()
+        public WinTreeBitmap()
         {
             InitializeComponent();
+
+            this.Loaded += (s, e) => { Init(); };
         }
 
         /// <summary>
@@ -41,7 +45,6 @@ namespace HorizontalOrgChartWpf
                 for (int j = 0; j <= str.GetUpperBound(1); j++)
                 {
                     tree.Childs[i].Add(str[i, j]);
-                    //string a = str[i, j];
                 }
             }
 
@@ -65,13 +68,11 @@ namespace HorizontalOrgChartWpf
 
             tree.Childs[2].Add("上海分公司销售部").Add("无无针无针针");
 
-            //Response.ContentType = "images/jpg";
-
+            string path = Directory.GetCurrentDirectory()+@"\demo.png";
             Bitmap bmp = tree.DrawAsImage();
+            bmp.Save(path);
 
-            //bmp.Save(Response.OutputStream, ImageFormat.Jpeg);
-
-            //Response.ClearContent();
+            img.Source = new BitmapImage(new Uri(path,UriKind.Absolute));
         }
     }
 }
